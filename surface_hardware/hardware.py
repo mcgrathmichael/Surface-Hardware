@@ -301,6 +301,24 @@ def screen(power):
 
 
 def on_message(client, userdata, msg):
+
+
+    print(
+        "MQTT COMMAND:",
+        msg.topic,
+        msg.payload.decode(),
+        flush=True
+    )
+
+    if msg.topic == "surface_hardware/brightness/set":
+        brightness.set(msg.payload.decode())
+
+    elif msg.topic == "surface_hardware/screen":
+        if msg.payload.decode() == "screen_on":
+            display.screen_on()
+        elif msg.payload.decode() == "screen_off":
+            display.screen_off()
+
     try:
         payload = msg.payload.decode().strip()
 
