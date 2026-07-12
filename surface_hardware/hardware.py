@@ -48,6 +48,22 @@ client = mqtt.Client(
     mqtt.CallbackAPIVersion.VERSION2
 )
 
+
+mqtt_user = os.environ.get("MQTT_USER")
+mqtt_password = os.environ.get("MQTT_PASSWORD")
+
+if mqtt_user and mqtt_password:
+    client.username_pw_set(
+        mqtt_user,
+        mqtt_password
+    )
+
+client.connect(
+    MQTT_HOST,
+    MQTT_PORT,
+    60
+)
+
 try:
 
     client.connect(
@@ -115,7 +131,7 @@ def publish_discovery():
             "name": data["name"],
             "state_topic": f"surface_hardware/{key}",
             "unit_of_measurement": data["unit"],
-            "unique_id": f"surface_{key}"
+            "unique_id":"surface_screen_control"
         }
 
 
