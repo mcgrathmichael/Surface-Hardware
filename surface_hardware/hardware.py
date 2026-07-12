@@ -5,8 +5,17 @@ import subprocess
 import paho.mqtt.client as mqtt
 
 
-MQTT_HOST = "core-mosquitto"
-MQTT_PORT = 1883
+MQTT_HOST = os.environ.get(
+    "MQTT_HOST",
+    "core-mosquitto"
+)
+
+MQTT_PORT = int(
+    os.environ.get(
+        "MQTT_PORT",
+        1883
+    )
+)
 
 
 def read(path):
@@ -39,11 +48,27 @@ client = mqtt.Client(
     mqtt.CallbackAPIVersion.VERSION2
 )
 
-client.connect(
-    MQTT_HOST,
-    MQTT_PORT,
-    60
-)
+try:
+
+    client.connect(
+        MQTT_HOST,
+        MQTT_PORT,
+        60
+    )
+
+    print(
+        "MQTT connected",
+        MQTT_HOST,
+        flush=True
+    )
+
+except Exception as e:
+
+    print(
+        "MQTT failed:",
+        e,
+        flush=True
+    )
 
 
 def publish_sensor(name, value, unit=None):
