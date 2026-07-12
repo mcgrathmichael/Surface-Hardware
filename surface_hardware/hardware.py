@@ -46,59 +46,42 @@ BACKLIGHT = find_backlight()
 
 import subprocess
 
-mqtt_host = subprocess.check_output(
-    ["bashio", "mqtt", "host"]
-).decode().strip()
+import os
 
-mqtt_port = int(
-    subprocess.check_output(
-        ["bashio", "mqtt", "port"]
-    ).decode().strip()
+MQTT_HOST = os.environ.get(
+    "MQTT_HOST",
+    "core-mosquitto"
 )
 
-mqtt_user = subprocess.check_output(
-    ["bashio", "mqtt", "username"]
-).decode().strip()
+MQTT_PORT = int(
+    os.environ.get(
+        "MQTT_PORT",
+        "1883"
+    )
+)
 
-mqtt_password = subprocess.check_output(
-    ["bashio", "mqtt", "password"]
-).decode().strip()
+MQTT_USER = os.environ.get(
+    "MQTT_USERNAME"
+)
+
+MQTT_PASSWORD = os.environ.get(
+    "MQTT_PASSWORD"
+)
 
 
 client = mqtt.Client()
 
-client.username_pw_set(
-    mqtt_user,
-    mqtt_password
-)
+if MQTT_USER and MQTT_PASSWORD:
+    client.username_pw_set(
+        MQTT_USER,
+        MQTT_PASSWORD
+    )
 
 client.connect(
-    mqtt_host,
-    mqtt_port,
+    MQTT_HOST,
+    MQTT_PORT,
     60
 )
-try:
-
-    client.connect(
-        MQTT_HOST,
-        MQTT_PORT,
-        60
-    )
-
-    print(
-        "MQTT connected",
-        MQTT_HOST,
-        flush=True
-    )
-
-except Exception as e:
-
-    print(
-        "MQTT failed:",
-        e,
-        flush=True
-    )
-
 
 def publish_sensor(name, value, unit=None):
 
