@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-
-import json
 import os
+import json
 import time
 
 import paho.mqtt.client as mqtt
 
+import brightness
+import display
 
 # ------------------------------------------------------------
 # Helpers
