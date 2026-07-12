@@ -1,9 +1,7 @@
 import os
-import time
 import json
-import subprocess
+import time
 import paho.mqtt.client as mqtt
-
 
 MQTT_HOST = os.environ.get(
     "MQTT_HOST",
@@ -43,11 +41,6 @@ def find_backlight():
 
 BACKLIGHT = find_backlight()
 
-
-import subprocess
-
-import os
-
 MQTT_HOST = os.environ.get(
     "MQTT_HOST",
     "core-mosquitto"
@@ -61,7 +54,7 @@ MQTT_PORT = int(
 )
 
 MQTT_USER = os.environ.get(
-    "MQTT_USERNAME"
+    "MQTT_USER"
 )
 
 MQTT_PASSWORD = os.environ.get(
@@ -69,7 +62,10 @@ MQTT_PASSWORD = os.environ.get(
 )
 
 
-client = mqtt.Client()
+client = mqtt.Client(
+    client_id="surface_hardware"
+)
+
 
 if MQTT_USER and MQTT_PASSWORD:
     client.username_pw_set(
@@ -77,11 +73,32 @@ if MQTT_USER and MQTT_PASSWORD:
         MQTT_PASSWORD
     )
 
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("MQTT connected")
+    else:
+        print(
+            "MQTT failed:",
+            rc
+        )
+
+
+client.on_connect = on_connect
+
+
 client.connect(
     MQTT_HOST,
     MQTT_PORT,
     60
 )
+print("MQTT SETTINGS")
+print(MQTT_HOST)
+print(MQTT_PORT)
+print(MQTT_USER)
+print(bool(MQTT_PASSWORD))
+
+client.loop_start()
 
 def publish_sensor(name, value, unit=None):
 
