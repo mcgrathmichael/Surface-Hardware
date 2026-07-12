@@ -21,5 +21,10 @@ privileged:
 devices:
   - /sys:/sys
 
+options:
+  mqtt:
+    username: ""
+    password: ""
+
 services:
   - mqtt:need
