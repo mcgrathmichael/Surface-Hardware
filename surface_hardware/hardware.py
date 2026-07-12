@@ -41,8 +41,9 @@ def find_backlight():
 
 BACKLIGHT = find_backlight()
 
-client = mqtt.Client()
-
+client = mqtt.Client(
+    mqtt.CallbackAPIVersion.VERSION2
+)
 MQTT_HOST = os.environ.get(
     "MQTT_HOST",
     "core-mosquitto"
@@ -79,8 +80,7 @@ client.reconnect_delay_set(
 
 connected = False
 
-def on_connect(client, userdata, flags, rc):
-
+def on_connect(client, userdata, flags, reason_code, properties=None):
     print("MQTT connected")
 
     publish_discovery()
@@ -177,7 +177,7 @@ def publish_discovery():
         "max":100,
 
         "unique_id":
-        "surface_brightness_control"
+        f"surface_{key}"
     }
 
 
