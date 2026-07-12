@@ -35,7 +35,9 @@ def find_backlight():
 BACKLIGHT = find_backlight()
 
 
-client = mqtt.Client()
+client = mqtt.Client(
+    mqtt.CallbackAPIVersion.VERSION2
+)
 
 client.connect(
     MQTT_HOST,
