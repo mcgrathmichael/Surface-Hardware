@@ -62,9 +62,7 @@ MQTT_PASSWORD = os.environ.get(
 )
 
 
-client = mqtt.Client(
-    client_id="surface_hardware"
-)
+client = mqtt.Client()
 
 
 if MQTT_USER and MQTT_PASSWORD:
