@@ -194,21 +194,25 @@ def set_brightness(value):
 
 def screen(power):
 
-    if power=="screen_off":
+    if not BACKLIGHT:
+        return
+
+
+    if power == "screen_off":
 
         with open(
-        "/sys/class/backlight/intel_backlight/bl_power",
-        "w"
+            BACKLIGHT + "/bl_power",
+            "w"
         ) as f:
 
             f.write("1")
 
 
-    if power=="screen_on":
+    elif power == "screen_on":
 
         with open(
-        "/sys/class/backlight/intel_backlight/bl_power",
-        "w"
+            BACKLIGHT + "/bl_power",
+            "w"
         ) as f:
 
             f.write("0")
@@ -242,57 +246,93 @@ client.on_message = message
 
 while True:
 
+    print("----------------------", flush=True)
+
     if BACKLIGHT:
 
-        maximum=int(
+        maximum = int(
             read(
-                BACKLIGHT+"/max_brightness"
+                BACKLIGHT + "/max_brightness"
+            ) or 1000
+        )
+
+        current = int(
+            read(
+                BACKLIGHT + "/brightness"
             )
         )
 
-        current=int(
-            read(
-                BACKLIGHT+"/brightness"
-            )
-        )
+        brightness = int(current * 100 / maximum)
 
+        print(
+            "Brightness:",
+            brightness,
+            "%",
+            flush=True
+        )
 
         publish_sensor(
             "brightness",
-            int(current*100/maximum)
+            brightness
         )
 
 
-    publish_sensor(
-        "battery",
-        read(
+    battery = read(
         "/sys/class/power_supply/BAT0/capacity"
-        )
     )
 
-
-    publish_sensor(
-        "cycles",
-        read(
+    cycles = read(
         "/sys/class/power_supply/BAT0/cycle_count"
-        )
+    )
+
+    temp = read(
+        "/sys/class/thermal/thermal_zone1/temp"
     )
 
 
-    temp=read(
-        "/sys/class/thermal/thermal_zone1/temp"
+    print(
+        "Battery:",
+        battery,
+        "%",
+        flush=True
+    )
+
+    print(
+        "Cycles:",
+        cycles,
+        flush=True
     )
 
 
     if temp:
 
-        publish_sensor(
-            "temperature",
-            round(
+        temperature = round(
             int(temp)/1000,
             1
-            )
         )
+
+        print(
+            "CPU Temp:",
+            temperature,
+            "°C",
+            flush=True
+        )
+
+        publish_sensor(
+            "temperature",
+            temperature
+        )
+
+
+    publish_sensor(
+        "battery",
+        battery
+    )
+
+    publish_sensor(
+        "cycles",
+        cycles
+    )
 
 
     client.loop()
