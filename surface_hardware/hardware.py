@@ -44,26 +44,38 @@ def find_backlight():
 BACKLIGHT = find_backlight()
 
 
-client = mqtt.Client(
-    mqtt.CallbackAPIVersion.VERSION2
+
+mqtt_host = subprocess.check_output(
+    ["bashio", "mqtt", "host"]
+).decode().strip()
+
+mqtt_port = int(
+    subprocess.check_output(
+        ["bashio", "mqtt", "port"]
+    ).decode().strip()
 )
 
+mqtt_user = subprocess.check_output(
+    ["bashio", "mqtt", "username"]
+).decode().strip()
 
-mqtt_user = os.environ.get("MQTT_USER")
-mqtt_password = os.environ.get("MQTT_PASSWORD")
+mqtt_password = subprocess.check_output(
+    ["bashio", "mqtt", "password"]
+).decode().strip()
 
-if mqtt_user and mqtt_password:
-    client.username_pw_set(
-        mqtt_user,
-        mqtt_password
-    )
+
+client = mqtt.Client()
+
+client.username_pw_set(
+    mqtt_user,
+    mqtt_password
+)
 
 client.connect(
-    MQTT_HOST,
-    MQTT_PORT,
+    mqtt_host,
+    mqtt_port,
     60
 )
-
 try:
 
     client.connect(
