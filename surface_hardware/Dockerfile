@@ -1,10 +1,12 @@
-FROM ghcr.io/home-assistant/base-python:3.14-alpine3.24
+ARG BUILD_FROM
 
-RUN apk add --no-cache \
-    py3-paho-mqtt
+FROM $BUILD_FROM
 
-COPY . /app
+RUN apk add --no-cache python3 py3-pip
 
-WORKDIR /app
+COPY run.sh /
+COPY hardware.py /
 
-CMD ["python3","hardware.py"]
+RUN chmod a+x /run.sh
+
+CMD [ "/run.sh" ]

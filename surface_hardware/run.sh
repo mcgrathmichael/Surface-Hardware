@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
-python3 hardware.py
+python3 /hardware.py
