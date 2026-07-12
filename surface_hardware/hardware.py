@@ -72,14 +72,14 @@ if MQTT_USER and MQTT_PASSWORD:
     )
 
 
+connected = False
+
 def on_connect(client, userdata, flags, rc):
+    global connected
+
     if rc == 0:
+        connected = True
         print("MQTT connected")
-    else:
-        print(
-            "MQTT failed:",
-            rc
-        )
 
 
 client.on_connect = on_connect
@@ -97,6 +97,9 @@ print(MQTT_USER)
 print(bool(MQTT_PASSWORD))
 
 client.loop_start()
+
+while not connected:
+    time.sleep(0.1)
 
 def publish_sensor(name, value, unit=None):
 
