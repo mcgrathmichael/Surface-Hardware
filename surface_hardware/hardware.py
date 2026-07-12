@@ -41,6 +41,8 @@ def find_backlight():
 
 BACKLIGHT = find_backlight()
 
+client = mqtt.Client()
+
 MQTT_HOST = os.environ.get(
     "MQTT_HOST",
     "core-mosquitto"
@@ -62,7 +64,7 @@ MQTT_PASSWORD = os.environ.get(
 )
 
 
-client = mqtt.Client()
+
 
 
 if MQTT_USER and MQTT_PASSWORD:
@@ -70,16 +72,20 @@ if MQTT_USER and MQTT_PASSWORD:
         MQTT_USER,
         MQTT_PASSWORD
     )
-
+client.reconnect_delay_set(
+    min_delay=1,
+    max_delay=30
+)
 
 connected = False
 
 def on_connect(client, userdata, flags, rc):
-    global connected
 
-    if rc == 0:
-        connected = True
-        print("MQTT connected")
+    print("MQTT connected")
+
+    publish_discovery()
+
+    client.subscribe("surface_hardware/#")
 
 
 client.on_connect = on_connect
@@ -95,8 +101,6 @@ print(MQTT_HOST)
 print(MQTT_PORT)
 print(MQTT_USER)
 print(bool(MQTT_PASSWORD))
-
-client.loop_start()
 
 while not connected:
     time.sleep(0.1)
@@ -390,6 +394,6 @@ while True:
     )
 
 
-    client.loop()
+    client.loop_start()
 
     time.sleep(30)
