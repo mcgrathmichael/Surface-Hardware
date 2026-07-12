@@ -104,6 +104,16 @@ def publish(topic, payload, retain=True):
 # Home Assistant Discovery
 # ------------------------------------------------------------
 
+def publish_sensor(name, value, unit=None):
+
+    topic = f"surface_hardware/{name}"
+
+    client.publish(
+        topic,
+        value,
+        retain=True
+    )
+    
 def publish_discovery():
 
     sensors = {
