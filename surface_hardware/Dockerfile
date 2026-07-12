@@ -1,11 +1,17 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.14-alpine3.24
+ARG BUILD_FROM
 
-FROM ${BUILD_FROM}
+FROM $BUILD_FROM
 
-RUN pip install paho-mqtt
+RUN apk add --no-cache python3 py3-pip
 
-COPY rootfs /
+RUN pip3 install --no-cache-dir paho-mqtt
 
+COPY run.sh /run.sh
 COPY hardware.py /usr/bin/hardware.py
+COPY brightness.py /usr/bin/brightness.py
+COPY display.py /usr/bin/display.py
 
-RUN chmod a+x /etc/services.d/surface-hardware/run
+RUN chmod +x /run.sh
+RUN chmod +x /usr/bin/hardware.py
+
+CMD [ "/run.sh" ]
