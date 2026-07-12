@@ -44,6 +44,7 @@ def find_backlight():
 BACKLIGHT = find_backlight()
 
 
+import subprocess
 
 mqtt_host = subprocess.check_output(
     ["bashio", "mqtt", "host"]
