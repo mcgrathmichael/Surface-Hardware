@@ -3,10 +3,12 @@ import os
 import json
 import time
 
-import brightness
-import display
 import paho.mqtt.client as mqtt
 
+import brightness
+import display
+from . import brightness
+from . import display
 
 # ------------------------------------------------------------
 # Helpers

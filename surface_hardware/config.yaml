@@ -1,16 +1,12 @@
 name: Surface Hardware
-
-version: "0.2.1"
-
+version: "0.2.2"
 slug: surface_hardware
-
 description: Surface Pro hardware monitoring and control
 
 arch:
   - amd64
 
 startup: services
-
 boot: auto
 
 init: false
@@ -19,7 +15,6 @@ privileged:
   - SYS_ADMIN
 
 devices:
-  - /sys:/sys
-
-services:
-  - mqtt:need
+  - /sys/class/backlight:/sys/class/backlight
+  - /sys/class/power_supply:/sys/class/power_supply
+  - /sys/class/thermal:/sys/class/thermal

@@ -1,17 +1,11 @@
-ARG BUILD_FROM
-
-FROM $BUILD_FROM
+FROM ghcr.io/home-assistant/amd64-base:3.24
 
 RUN apk add --no-cache python3 py3-pip
 
 RUN pip3 install --no-cache-dir paho-mqtt
 
-COPY run.sh /run.sh
-COPY hardware.py /usr/bin/hardware.py
-COPY brightness.py /usr/bin/brightness.py
-COPY display.py /usr/bin/display.py
+COPY rootfs/usr/bin/ /usr/bin/
 
-RUN chmod +x /run.sh
 RUN chmod +x /usr/bin/hardware.py
 
-CMD [ "/run.sh" ]
+CMD ["/usr/bin/hardware.py"]
