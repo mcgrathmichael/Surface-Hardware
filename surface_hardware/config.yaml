@@ -20,3 +20,6 @@ privileged:
 
 devices:
   - /sys:/sys
+
+services:
+  - mqtt:need
