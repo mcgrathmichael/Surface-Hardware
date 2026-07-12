@@ -1,8 +1,9 @@
-FROM ghcr.io/home-assistant/base-python:3.14-alpine3.24
+ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.14-alpine3.24
 
-COPY run.sh /
-COPY hardware.py /
+FROM ${BUILD_FROM}
 
-RUN chmod a+x /run.sh
+COPY rootfs /
 
-CMD ["/run.sh"]
+COPY hardware.py /usr/bin/hardware.py
+
+RUN chmod a+x /etc/services.d/surface-hardware/run

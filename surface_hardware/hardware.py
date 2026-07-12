@@ -1,47 +1,43 @@
 import time
-import os
 
 
-def read_file(path):
+def read(path):
     try:
         with open(path) as f:
             return f.read().strip()
     except Exception as e:
-        return str(e)
+        return f"ERROR {e}"
 
 
-print("Surface Hardware started")
+print("Surface Hardware started", flush=True)
+
 
 while True:
 
-    print("--------------------")
+    print("----------------------", flush=True)
 
     print(
         "Brightness:",
-        read_file(
-            "/sys/class/backlight/intel_backlight/actual_brightness"
-        )
+        read("/sys/class/backlight/intel_backlight/actual_brightness"),
+        flush=True
     )
 
     print(
         "Battery:",
-        read_file(
-            "/sys/class/power_supply/BAT0/capacity"
-        )
+        read("/sys/class/power_supply/BAT0/capacity"),
+        flush=True
     )
 
     print(
         "Cycles:",
-        read_file(
-            "/sys/class/power_supply/BAT0/cycle_count"
-        )
+        read("/sys/class/power_supply/BAT0/cycle_count"),
+        flush=True
     )
 
     print(
-        "CPU:",
-        read_file(
-            "/sys/class/thermal/thermal_zone1/temp"
-        )
+        "CPU temp:",
+        read("/sys/class/thermal/thermal_zone1/temp"),
+        flush=True
     )
 
     time.sleep(30)
