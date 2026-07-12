@@ -1,0 +1,32 @@
+name: Surface Hardware
+
+version: "0.1.0"
+
+slug: surface_hardware
+
+description: Surface Pro hardware daemon
+
+arch:
+  - amd64
+
+startup: services
+
+boot: auto
+
+host_network: true
+
+privileged:
+  - SYS_ADMIN
+
+devices:
+  - /sys/class/backlight
+
+options:
+  mqtt_host: homeassistant
+  mqtt_user: mqtt
+  mqtt_password: ""
+
+schema:
+  mqtt_host: str
+  mqtt_user: str
+  mqtt_password: password
