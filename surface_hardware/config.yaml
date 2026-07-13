@@ -1,8 +1,8 @@
 name: Surface Hardware
-version: "0.2.4"
+version: "0.2.6"
 slug: surface_hardware
 description: Surface Pro hardware monitoring and control
-host_network: true
+
 arch:
   - amd64
 
@@ -17,3 +17,4 @@ full_access: true
 privileged:
   - SYS_ADMIN
 apparmor: false
+host_network: true
