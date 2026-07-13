@@ -12,9 +12,9 @@ RUN pip3 install --no-cache-dir --break-system-packages paho-mqtt
 
 # Add-on files
 COPY run.sh /run.sh
-COPY hardware.py /usr/bin/hardware.py
-COPY brightness.py /usr/bin/brightness.py
-COPY display.py /usr/bin/display.py
+COPY hardware.py /hardware.py
+COPY brightness.py /brightness.py
+COPY display.py /display.py
 
 RUN chmod a+x /run.sh /usr/bin/hardware.py
 
