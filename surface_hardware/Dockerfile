@@ -7,7 +7,6 @@ RUN apk add --no-cache \
         py3-pip
 
 # Alpine 3.19+ marks system Python as "externally managed" (PEP 668).
-# --break-system-packages tells pip it's OK to install system-wide inside this container.
 RUN pip3 install --no-cache-dir --break-system-packages paho-mqtt
 
 # Add-on files
@@ -16,6 +15,6 @@ COPY hardware.py /hardware.py
 COPY brightness.py /brightness.py
 COPY display.py /display.py
 
-RUN chmod a+x /run.sh /usr/bin/hardware.py
+RUN chmod a+x /run.sh /hardware.py
 
 CMD [ "/run.sh" ]
