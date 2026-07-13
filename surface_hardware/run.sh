@@ -1,7 +1,11 @@
 #!/usr/bin/with-contenv bashio
 
-echo "Remounting /sys read-write for backlight control"
-mount -o remount,rw /sys 2>&1 || echo "WARNING: could not remount /sys rw — screen/brightness control will fail"
+echo "Remounting backlight sysfs read-write..."
+mount -o remount,rw /sys/class/backlight/intel_backlight
+echo "Remount exit code: $?"
+
+mount -o remount,rw /sys 2>/dev/null
+echo "Full /sys remount exit code: $?"
 
 export MQTT_HOST=$(bashio::services mqtt "host")
 export MQTT_PORT=$(bashio::services mqtt "port")
