@@ -6,4 +6,4 @@ export MQTT_USER=$(bashio::services mqtt "username")
 export MQTT_PASSWORD=$(bashio::services mqtt "password")
 echo "Starting Surface Hardware"
 
-python3 /usr/bin/hardware.py
+python3 /hardware.py
