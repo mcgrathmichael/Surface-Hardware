@@ -8,13 +8,11 @@ arch:
 
 startup: services
 boot: auto
-
 init: false
 
+services:
+  - mqtt:want
+
+full_access: true
 privileged:
   - SYS_ADMIN
-
-devices:
-  - /sys/class/backlight:/sys/class/backlight
-  - /sys/class/power_supply:/sys/class/power_supply
-  - /sys/class/thermal:/sys/class/thermal
