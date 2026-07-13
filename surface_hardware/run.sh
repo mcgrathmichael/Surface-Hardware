@@ -1,8 +1,10 @@
 #!/usr/bin/with-contenv bashio
 
-echo "Remounting backlight sysfs read-write..."
-mount -o remount,rw /sys
-echo "Remount exit code: $?"
+echo "Attempting to remount /sys read-write..."
+mount -o remount,rw /sys || true
+
+echo "Attempting to remount backlight sysfs read-write..."
+mount -o remount,rw /sys/class/backlight/intel_backlight || true
 
 export MQTT_HOST=$(bashio::services mqtt "host")
 export MQTT_PORT=$(bashio::services mqtt "port")
