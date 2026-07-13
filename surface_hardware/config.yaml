@@ -1,5 +1,5 @@
 name: Surface Hardware
-version: "0.2.3"
+version: "0.2.4"
 slug: surface_hardware
 description: Surface Pro hardware monitoring and control
 
@@ -16,3 +16,4 @@ services:
 full_access: true
 privileged:
   - SYS_ADMIN
+apparmor: false
